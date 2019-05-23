@@ -36,3 +36,10 @@ Automatically start - Khởi động tự động:
 
 Remember that you have to use Spotify Premium for this build. And you have to authenticate with Spotify at first start.
 Ghi nhớ: Bạn phải có tài khoản Spotify Premium. 
+
+
+HOW TO UPDATE:
+
+    cd lbminh-bot-test
+    git pull
+    python3 setupLBMINHBOT.py 
