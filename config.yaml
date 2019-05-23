@@ -20,7 +20,10 @@ stand_alone: 0
 tts: google
 version_above084: right
 voice: leminh
+#Nếu có spotify thì nhập 1
 spotify: 0
 spotify_username: abc@gmail.com
 spotify_client_id: 
 spotify_client_secret: 
+#Nếu có Respeaker thì nhập 1
+seed: 0

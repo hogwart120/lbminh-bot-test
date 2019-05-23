@@ -21,8 +21,16 @@ import re
 import radio 
 import weth
 import wk
-import spot
-
+sp_act = gih.get_config('spotify')
+if sp_act == 1:
+    import spot
+s_user = gih.get_config('spotify_username')
+s_id = gih.get_config('spotify_client_id')
+s_secret = gih.get_config('spotify_client_secret')
+seed = gih.get_config('seed')
+if seed == 1:
+    import apa102
+    from pixels import pixels
 def recordAudio():
     r = sr.Recognizer()
     with sr.Microphone() as source:
@@ -47,18 +55,23 @@ def answer(ans1,ans2,ans3):
     speaking.speak(spea)
 
 def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
-    
+       
     global player
     print('[MAIN] - THỰC THI TÁC VỤ')
     print('---------')
     processss.timlenhtrongdata(data)
 
     if row0_in_db== "KHỎE KHÔNG":
+        if seed == 1:
+            pixels.speak()
         answer("em khỏe. ","khỏe lắm anh ","khỏe chứ anh. ",)
+        if seed == 1:
+            pixels.off()
+
 #camera - dieu khien xoay
     elif row0_in_db == "CAMERA":
         print('vao camera')
-        a=ptz.control('ip','user','pass')
+        a=ptz.control('http://192.168.9.121','admin','Emilybro2013')
         datapreset=data
         datapreset=datapreset.split()
         iiii=0
@@ -92,6 +105,8 @@ def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
 # Âm lịch
     elif row0_in_db == "ÂM LỊCH":
         check_day=[]
+        if seed == 1:
+            pixels.speak()
         if 'MAI' in data:
             check_day=amlich.ngaymai()
         elif 'MỐT' in data:
@@ -103,11 +118,14 @@ def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
         else:
             check_day=amlich.ngaykhac(data)
         amlich.kiemtra_amlich(check_day[0],check_day[1],check_day[2],check_day[3],check_day[4])
-        
+        if seed == 1:
+            pixels.off()        
 
 #Hỏi thứ
     elif row0_in_db == "THỨ MẤY":
         check_thu=[]
+        if seed == 1:
+            pixels.speak()
         if 'MAI' in data:
             check_thu=thu.ngaymai()
         elif 'MỐT' in data:
@@ -122,23 +140,33 @@ def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
 
         result_thu=thu.kiemtra_thu(check_thu[0],check_thu[1],check_thu[2],check_thu[3],check_thu[4])
         speaking.speak(result_thu[0]+" là " + result_thu[1] + ' '+ result_thu[2] + ' tháng '+ str(result_thu[3]))
-        
+        if seed == 1:
+            pixels.off()        
 # Ngày lễ
     elif row0_in_db == "NGÀY LỄ":
+        if seed == 1:
+            pixels.speak()
 #        answer('không có chi. ','rất vui vì giúp được anh ',' đừng bận tâm ')
         ngayle_res=[]
         ngayle_res=ngayle.ngayle_check(data)
         speaking.speak(ngayle_res[0] + ' Còn '+str(ngayle_res[1])+' ngày nữa là đến '+ngayle_res[2]  + '. Đó là ngày '+ngayle_res[3] +' tháng '+ngayle_res[4] +' năm '+ngayle_res[5] )
-
+        if seed == 1:
+            pixels.off()
 #Cảm ơn	
     elif row0_in_db == "CẢM ƠN":
+        if seed == 1:
+            pixels.speak()
         answer('không có chi. ','rất vui vì giúp được anh ',' đừng bận tâm ')
+        if seed == 1:
+            pixels.off()
 #Gass	
     elif row0_in_db == "BAO NHIÊU TUỔI":
             import textinput
             textinput.main()
 #HELP
     elif row0_in_db == "TRỢ GIÚP":
+        if seed == 1:
+            pixels.speak()
         if 'THỜI TIẾT' in data:
             speaking.speak('Có thể hỏi các câu hỏi bao gồm các từ như, Thời tiết hôm nay, ngày mai')
         elif 'GIỜ' in data:
@@ -161,8 +189,12 @@ def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
             speaking.speak('Hỏi còn bao nhiêu ngày nữa là đến ngày lễ. Các ngày lễ có sẵn bao gồm, Tết Tây, Tết ta, 30 tháng 4, trung thu, giỗ tổ, quốc khánh. ')
         else:
             speaking.speak('Các lệnh thường dùng, Hỏi giờ, thời tiết, thứ ngày tháng, thông tin, lệnh, phát nhạc, hẹn giờ, dịch từ, dịch câu, âm lịch, ngày lễ. Dùng lệnh trợ giúp kèm theo các lệnh muốn tra cứu để được hướng dẫn chi tiết hơn.')
+        if seed == 1:
+            pixels.off()
 #Hỏi giờ
     elif row0_in_db == "MẤY GIỜ":
+        if seed == 1:
+            pixels.speak()
         from time import ctime, strftime
         gio = strftime("%H")
         gio = list(gio)
@@ -199,15 +231,20 @@ def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
                 docphut = phut[0]+ ' mươi '+ phut[1]+ ' phút '
 
         speaking.speak("BÂY GIỜ LÀ " + docgio + docphut)
+        if seed == 1:
+            pixels.off()
 #Tin tức (TTS)
     elif row0_in_db == "TIN TỨC":
+        pixels.speak()
         tintuc.tintucmoi()
 
     elif row0_in_db == "XỔ SỐ":
+        pixels.speak()
         print ('Kết quả xổ số')
         loto.check(data)
 #Truyện cười	
     elif row0_in_db == "CƯỜI":
+        pixels.speak()	
         truyen = fun.truyen()
         speaking.speak(truyen)
 
@@ -222,6 +259,7 @@ def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
     # elif row0_in_db == 'NHẮC':
 
     elif row0_in_db == "RADIO":
+        pixels.speak()
         try:
             player.stop()
         except:
@@ -231,6 +269,8 @@ def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
     elif row0_in_db=="ĐI NGỦ":
         pass
     elif row0_in_db=="LÀ GÌ":
+        if seed == 1:
+            pixels.speak()
         def wifi(data):
             data = data[0:len(data)-6]
             rep = wk.find_info(data)
@@ -240,26 +280,36 @@ def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
             speaking.speak('Theo wikipedia: '+rep)
         speaking.speak('để em tìm xem nào')
         execute.run_thread(wifi,data) 
+        if seed == 1:
+            pixels.off()
 
 # Phát video
     elif row0_in_db=="PHÁT" :
+        if seed == 1:
+            pixels.speak()
         global spotipy
         try:
             player.stop()
         except:
             pass
-        spotipy=spot.play_current_playlist('6fnl8e7iy2hmhwwggx279e3wo','652d7fe6b87c4c5d852d042c5ca6c47f','4d723ee2fffa4503b3ecdc81a5c8b5e3','http://localhost:9999/',data)
-        if spotipy[0] ==False:
+        if sp_act == 1:
+            spotipy=spot.play_current_playlist(s_user,s_id,s_secret,'http://localhost:9999/',data)
+        else:
             player= radio.play_nhac(data,friendly_name_hass)
-
+        if seed == 1:
+            pixels.off()
     elif row0_in_db=="TIẾP THEO":
         try:
             player.stop()
         except:
             pass
         player=radio.phat_tiep_theo()
+        if seed == 1:
+            pixels.off()
 # Google word translate
     elif row0_in_db=="CÓ NGHĨA" :
+        if seed == 1:
+            pixels.speak()
         from googletrans import Translator
         translator = Translator()
         print (data)
@@ -376,8 +426,7 @@ def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
         except Exception as e:
             print(e)
             pass
-        at=spot.spo('drlbminh','d6881de9093040d8b9c18d669224b559','8f233b0f5037456b9c5e084f3f069efd','http://localhost:9999/')
-
+        at=spot.spo(s_user,s_id,s_secret,'http://localhost:9999/')
         sp=at.assign()
         de=sp.devices()
         de=de['devices']
@@ -390,15 +439,20 @@ def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
                 print(t)
                 pass
     elif row0_in_db=="TO LÊN":
+        pixels.speak()
         radio.to_len()
     elif row0_in_db=="NHỎ XUỐNG":
+        pixels.speak()
         radio.nho_xuong()
     elif row0_in_db=="ÂM LƯỢNG":
+        pixels.speak()
         vol_extract = radio.amluong(data)
         speaking.speak("thiết lập âm lượng mức "+ str(vol_extract))
     elif row0_in_db=="THIẾT LẬP":
+        pixels.speak()
         onoff.thietlap(friendly_name_hass,sta,data)
     elif row0_in_db=="MỞ":
+        pixels.speak()
         onoff.on_mo(friendly_name_hass,data)
     elif row0_in_db=="TẮT":
         onoff.off_tat(friendly_name_hass,data)
@@ -409,10 +463,16 @@ def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
     elif row0_in_db=="":
         speaking.speak('em không hiểu rồi đại ca ơi')
 # Trạng thái
-    elif row0_in_db=="TRẠNG THÁI":   
+    elif row0_in_db=="TRẠNG THÁI":
+        if seed == 1:
+            pixels.speak()	
         onoff.trangthai(sta)
+        if seed == 1:
+            pixels.off()		
 #Thời tiết        
     elif row0_in_db=="THỜI TIẾT":
+        if seed == 1:
+            pixels.speak()
         def wt(data):
             fio=weth.darksky_weather()
             if "HIỆN TẠI" in data or "HÔM NAY" in data :
@@ -444,16 +504,9 @@ def hamthucthi(row0_in_db,data,friendly_name_hass,sta):
         answer('đang kiểm tra thông tin thời tiết', 'để em kiểm tra', 'em kiểm tra ngay')
         execute.run_thread(wt,data)
     else:
+        pixels.speak()
         answer('em không hiểu','em nghe không rõ',' vui lòng nói lại đi')
-
-    
-
-
-
-
-
-
-
+    pixels.off()
 
 
 def mainloop():
