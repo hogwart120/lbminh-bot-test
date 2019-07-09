@@ -1,4 +1,4 @@
 #!/bin/bash
 source env/bin/activate
-cd /home/pi/lbminh-bot-test
+cd $PWD
 python3 main.py

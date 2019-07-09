@@ -1,5 +1,4 @@
 #!/home/pi/lbminh-bot/env/bin/python
-
 # -*- coding: utf-8 -*-
 import re
 import sys
